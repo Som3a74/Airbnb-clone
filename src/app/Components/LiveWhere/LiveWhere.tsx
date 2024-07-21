@@ -6,7 +6,6 @@ import Image from 'next/image';
 
 export default async function LiveWhere() {
     const dataLive: LiveWhereTypeArray = await getLiveWhere()
-    console.log(dataLive)
 
     return (
         <section className='mt-6'>

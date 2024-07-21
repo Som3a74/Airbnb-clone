@@ -20,4 +20,14 @@ export const getLiveWhere = async () => {
 };
 
 
-
+export const getCardSearch = async () => {
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/b/5NPS` , {
+            cache:'force-cache'
+        });
+        const CardSearchData = await res.json();
+        return CardSearchData;
+    } catch (error) {
+        console.log(error);
+    }
+};

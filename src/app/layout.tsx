@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Hadder from "./Components/Hadder/Hadder";
 import Footer from "./Components/Footer/Footer";
+import NextTopLoader from 'nextjs-toploader';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,6 +17,7 @@ export default function RootLayout({ children, }: Readonly<{ children: React.Rea
     <html lang="en">
       <body className={inter.className}>
         <Hadder />
+        <NextTopLoader color='#FE595E'/>
         {children}
         <Footer />
       </body>

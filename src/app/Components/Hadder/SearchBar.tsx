@@ -1,17 +1,24 @@
 "use client"
 import { MagnifyingGlassIcon, UsersIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
-import 'react-date-range/dist/styles.css'; // main style file
-import 'react-date-range/dist/theme/default.css'; // theme css file
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
 import { Calendar, RangeKeyDict } from 'react-date-range';
 import { DateRangePicker } from 'react-date-range';
 import Link from "next/link";
+
+interface typePlace {
+    start: String,
+    end: String,
+    loactionUser: String,
+}
 
 export default function SearchBar() {
     const [inputValue, setinputValue] = useState('')
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
     const [numOfGuests, setnumOfGuests] = useState(1);
+    const [PlaceHold, setPlaceHold] = useState<typePlace | undefined>(undefined);
 
     const selectionRange = {
         startDate,
@@ -22,13 +29,26 @@ export default function SearchBar() {
     function handleSelect(ranges: RangeKeyDict) {
         setStartDate(ranges.selection.startDate as Date)
         setEndDate(ranges.selection.endDate as Date)
-        console.log(ranges)
+        // console.log(ranges)
     }
+
+    function handelSearch() {
+        if (startDate && endDate) {
+            const dataPlace: typePlace = {
+                start: startDate.toString().split(' ', 3).join(' '),
+                end: endDate.toString().split(' ', 3).join(' '),
+                loactionUser: inputValue,
+            };
+            setPlaceHold(dataPlace)
+        }
+        setinputValue('')
+    }
+
     return <>
         <div className="flex flex-col">
             <div className="flex items-center sm:border-2 sm:shadow rounded-full py-2">
                 <input type="text"
-                    placeholder="Start your Search "
+                    placeholder={PlaceHold ? `${PlaceHold.loactionUser} - ${PlaceHold.start} || ${PlaceHold.end}` : "Start your Search "}
                     value={inputValue}
                     onChange={(e) => setinputValue(e.target.value)}
                     className="text-sm bg-gray-600 placeholder-gray-400 pl-5 bg-transparent rounded-full outline-none flex-grow"
@@ -62,7 +82,7 @@ export default function SearchBar() {
                                 pathname: '/Search',
                                 search: `?location=${inputValue}&startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}&numOfGuests=${numOfGuests}`,
                             }}
-                            onClick={() => setinputValue('')}
+                            onClick={() => handelSearch()}
                             className='flex-grow text-red-400'
                         >
                             Search
